@@ -39,19 +39,21 @@ Route::middleware(['auth'])->group(function () {
         // Tambahkan route cetak laporan atau seleksi di sini nanti
 
         Route::post('/umumkan-final', [AdminController::class, 'umumkanFinal'])->name('admin.umumkan.final');
-        
+
         Route::get('/jurusan', [AdminController::class, 'jurusan'])->name('admin.jurusan');
         // TAMBAHKAN BARIS DI BAWAH INI:
         Route::post('/jurusan', [AdminController::class, 'jurusanStore'])->name('admin.jurusan.store');
-        });
-        // Rute untuk Update Jurusan
-        Route::put('/jurusan/{id}', [AdminController::class, 'jurusanUpdate'])->name('admin.jurusan.update');
+    });
+    // Rute untuk Update Jurusan
+    Route::put('/jurusan/{id}', [AdminController::class, 'jurusanUpdate'])->name('admin.jurusan.update');
 
-        // Rute untuk Hapus Jurusan
-        Route::delete('/jurusan/{id}', [AdminController::class, 'jurusanDelete'])->name('admin.jurusan.delete');
+    // Rute untuk Hapus Jurusan
+    Route::delete('/jurusan/{id}', [AdminController::class, 'jurusanDelete'])->name('admin.jurusan.delete');
 
-Route::post('/admin/verifikasi/{id}', [AdminController::class, 'updateStatus'])->name('admin.verifikasi.update');
+    Route::post('/admin/verifikasi/{id}', [AdminController::class, 'updateStatus'])->name('admin.verifikasi.update');
 
-Route::get('/cetak-bukti', [SiswaController::class, 'cetakBukti'])->name('siswa.cetak');
-
+    Route::get('/cetak-bukti', [SiswaController::class, 'cetakBukti'])->name('siswa.cetak');
 });
+
+Route::get('/admin/pendaftar/{id}', [AdminController::class, 'show'])
+    ->name('admin.pendaftar.show');

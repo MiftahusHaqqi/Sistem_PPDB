@@ -64,7 +64,10 @@
                                 <img src="{{ asset($p->foto ?? 'assets/img/avatars/1.png') }}" alt="Avatar" class="rounded-circle" style="object-fit: cover">
                             </div>
                             <div class="d-flex flex-column">
-                                <span class="fw-semibold">{{ $p->nama_lengkap }}</span>
+                                <a href="{{ route('admin.pendaftar.show', $p->id) }}"
+                                    class="fw-semibold text-decoration-none">
+                                        {{ $p->nama_lengkap }}
+                                </a>
                                 <small class="text-muted">{{ $p->nomor_pendaftaran }}</small>
                             </div>
                         </div>
