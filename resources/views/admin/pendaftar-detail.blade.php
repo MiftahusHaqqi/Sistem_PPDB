@@ -82,18 +82,60 @@
 
 
 <div class="mt-4 d-flex gap-2">
-    <form action="{{ route('admin.verifikasi.update', $pendaftar->id) }}" method="POST">
-        @csrf
-        <input type="hidden" name="status" value="Terverifikasi">
-        <button class="btn btn-success">Verifikasi</button>
-    </form>
 
-    <form action="{{ route('admin.verifikasi.update', $pendaftar->id) }}" method="POST">
-        @csrf
-        <input type="hidden" name="status" value="Tidak Lulus">
-        <button class="btn btn-danger">Tolak</button>
-    </form>
+    {{-- BELUM DIVERIFIKASI --}}
+    @if($pendaftar->status_pendaftaran === 'Belum Diverifikasi')
 
-    <a href="{{ route('admin.verifikasi') }}" class="btn btn-secondary">Kembali</a>
+        <form action="{{ route('admin.pendaftar.verifikasi', $pendaftar->id) }}" method="POST">
+            @csrf
+            @method('PATCH')
+            <button class="btn btn-success">
+                <i class="bx bx-check"></i> Verifikasi
+            </button>
+        </form>
+
+        <form action="{{ route('admin.pendaftar.tolak', $pendaftar->id) }}" method="POST"
+              onsubmit="return confirm('Yakin ingin MENOLAK pendaftar ini?')">
+            @csrf
+            @method('PATCH')
+            <button class="btn btn-danger">
+                <i class="bx bx-x"></i> Tolak
+            </button>
+        </form>
+
+
+    {{-- TERVERIFIKASI --}}
+    @elseif($pendaftar->status_pendaftaran === 'Terverifikasi')
+
+        <form action="{{ route('admin.pendaftar.batal', $pendaftar->id) }}" method="POST"
+              onsubmit="return confirm('Batalkan verifikasi siswa ini?')">
+            @csrf
+            @method('PATCH')
+            <button class="btn btn-warning">
+                <i class="bx bx-undo"></i> Batalkan Verifikasi
+            </button>
+        </form>
+
+        <form action="{{ route('admin.pendaftar.tolak', $pendaftar->id) }}" method="POST"
+              onsubmit="return confirm('Yakin ingin MENOLAK pendaftar ini?')">
+            @csrf
+            @method('PATCH')
+            <button class="btn btn-danger">
+                <i class="bx bx-x"></i> Tolak
+            </button>
+        </form>
+
+
+    {{-- DITOLAK --}}
+    @elseif($pendaftar->status_pendaftaran === 'Tidak Lulus')
+
+        <span class="badge bg-danger">DITOLAK</span>
+        <p class="text-muted mt-2">
+            Siswa harus melakukan <strong>pendaftaran ulang</strong>.
+        </p>
+
+    @endif
+
 </div>
+
 @endsection

@@ -43,6 +43,25 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/jurusan', [AdminController::class, 'jurusan'])->name('admin.jurusan');
         // TAMBAHKAN BARIS DI BAWAH INI:
         Route::post('/jurusan', [AdminController::class, 'jurusanStore'])->name('admin.jurusan.store');
+
+        // Detail pendaftar
+        Route::get('/pendaftar/{id}', [AdminController::class, 'show'])
+            ->name('admin.pendaftar.show');
+
+        // Verifikasi pendaftar
+        Route::patch('/pendaftar/{id}/verifikasi', [AdminController::class, 'verifikasiPendaftar'])
+            ->name('admin.pendaftar.verifikasi');
+
+        // Batalkan verifikasi
+        Route::patch('/pendaftar/{id}/batal-verifikasi', [AdminController::class, 'batalVerifikasiPendaftar'])
+            ->name('admin.pendaftar.batal');
+
+        // Tolak pendaftar
+        Route::patch('/pendaftar/{id}/tolak', [AdminController::class, 'tolakPendaftar'])
+            ->name('admin.pendaftar.tolak');
+
+        Route::get('/admin/pendaftar/{id}', [AdminController::class, 'show'])
+            ->name('admin.pendaftar.show');
     });
     // Rute untuk Update Jurusan
     Route::put('/jurusan/{id}', [AdminController::class, 'jurusanUpdate'])->name('admin.jurusan.update');
@@ -50,10 +69,7 @@ Route::middleware(['auth'])->group(function () {
     // Rute untuk Hapus Jurusan
     Route::delete('/jurusan/{id}', [AdminController::class, 'jurusanDelete'])->name('admin.jurusan.delete');
 
-    Route::post('/admin/verifikasi/{id}', [AdminController::class, 'updateStatus'])->name('admin.verifikasi.update');
+    // Route::post('/admin/verifikasi/{id}', [AdminController::class, 'updateStatus'])->name('admin.verifikasi.update');
 
     Route::get('/cetak-bukti', [SiswaController::class, 'cetakBukti'])->name('siswa.cetak');
 });
-
-Route::get('/admin/pendaftar/{id}', [AdminController::class, 'show'])
-    ->name('admin.pendaftar.show');

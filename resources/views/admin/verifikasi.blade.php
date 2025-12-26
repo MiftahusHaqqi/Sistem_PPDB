@@ -86,23 +86,62 @@
                     </td>
 <td class="text-center">
     <div class="d-flex justify-content-center gap-2">
-        <form action="{{ route('admin.verifikasi.update', $p->id) }}" method="POST">
-            @csrf
-            <input type="hidden" name="status" value="Terverifikasi">
-            <button type="submit" class="btn btn-sm btn-success" title="Verifikasi">
-                <i class="bx bx-check"></i>
-            </button>
-        </form>
 
-        <form action="{{ route('admin.verifikasi.update', $p->id) }}" method="POST">
-            @csrf
-            <input type="hidden" name="status" value="Tidak Lulus">
-            <button type="submit" class="btn btn-sm btn-danger" title="Tolak">
-                <i class="bx bx-x"></i>
-            </button>
-        </form>
+        {{-- STATUS: BELUM DIVERIFIKASI --}}
+        @if ($p->status_pendaftaran === 'Belum Diverifikasi')
+
+            {{-- VERIFIKASI --}}
+            <form action="{{ route('admin.pendaftar.verifikasi', $p->id) }}" method="POST">
+                @csrf
+                @method('PATCH')
+                <button type="submit" class="btn btn-sm btn-success" title="Verifikasi">
+                    <i class="bx bx-check"></i>
+                </button>
+            </form>
+
+            {{-- TOLAK --}}
+            <form action="{{ route('admin.pendaftar.tolak', $p->id) }}" method="POST"
+                  onsubmit="return confirm('Yakin ingin MENOLAK pendaftar ini? Siswa harus daftar ulang!')">
+                @csrf
+                @method('PATCH')
+                <button type="submit" class="btn btn-sm btn-danger" title="Tolak">
+                    <i class="bx bx-x"></i>
+                </button>
+            </form>
+
+
+        {{-- STATUS: TERVERIFIKASI --}}
+        @elseif ($p->status_pendaftaran === 'Terverifikasi')
+
+            {{-- BATALKAN VERIFIKASI --}}
+            <form action="{{ route('admin.pendaftar.batal', $p->id) }}" method="POST"
+                  onsubmit="return confirm('Batalkan verifikasi siswa ini?')">
+                @csrf
+                @method('PATCH')
+                <button type="submit" class="btn btn-sm btn-warning" title="Batalkan Verifikasi">
+                    <i class="bx bx-undo"></i>
+                </button>
+            </form>
+
+            {{-- TOLAK (tetap ada) --}}
+            <form action="{{ route('admin.pendaftar.tolak', $p->id) }}" method="POST"
+                  onsubmit="return confirm('Yakin ingin MENOLAK pendaftar ini?')">
+                @csrf
+                @method('PATCH')
+                <button type="submit" class="btn btn-sm btn-danger" title="Tolak">
+                    <i class="bx bx-x"></i>
+                </button>
+            </form>
+
+
+        {{-- STATUS: DITOLAK --}}
+        @else
+            <span class="badge bg-label-danger">Ditolak</span>
+        @endif
+
     </div>
 </td>
+
                 </tr>
                 @endforeach
             </tbody>

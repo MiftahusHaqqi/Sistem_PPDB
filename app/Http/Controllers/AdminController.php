@@ -15,7 +15,10 @@ class AdminController extends Controller
             'total' => Registration::count(),
             'verif' => Registration::where('status_pendaftaran', 'Terverifikasi')->count(),
             'pending' => Registration::where('status_pendaftaran', 'Belum Diverifikasi')->count(),
-            'lulus' => Registration::where('status_pendaftaran', 'Lulus')->count(),
+            'lulus' => Registration::where('status_pendaftaran', 'Terverifikasi')
+                ->where('is_final', 1)
+                ->count(),
+
         ];
 
         // Data untuk tabel atau grafik (opsional)
@@ -58,6 +61,48 @@ class AdminController extends Controller
 
         return view('admin.pendaftar-detail', compact('pendaftar'));
     }
+
+    public function verifikasiPendaftar($id)
+    {
+        $p = Registration::findOrFail($id);
+
+        if ($p->status_pendaftaran === 'ditolak') {
+            return back()->with('error', 'Pendaftaran sudah ditolak');
+        }
+
+        $p->status_pendaftaran = 'Terverifikasi';
+        $p->save();
+
+        return back()->with('success', 'Pendaftaran berhasil diverifikasi');
+    }
+
+    public function batalVerifikasiPendaftar($id)
+    {
+        $p = Registration::findOrFail($id);
+
+        if ($p->status_pendaftaran !== 'Terverifikasi') {
+            return back()->with('error', 'Status tidak valid');
+        }
+
+        $p->status_pendaftaran = 'Belum Diverifikasi';
+        $p->save();
+
+        return back()->with('success', 'Verifikasi berhasil dibatalkan');
+    }
+
+    public function tolakPendaftar($id)
+    {
+        $p = Registration::findOrFail($id);
+
+        $p->status_pendaftaran = 'Tidak Lulus';
+        $p->save();
+
+        return back()->with(
+            'success',
+            'Pendaftaran ditolak. Siswa harus mengajukan ulang.'
+        );
+    }
+
 
 
 
