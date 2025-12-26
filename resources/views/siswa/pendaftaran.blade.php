@@ -96,6 +96,19 @@
                     <small class="text-success">File sudah ada: <a href="{{ asset($pendaftaran->document->file_akta) }}" target="_blank">Lihat File</a></small>
                 @endif
             </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Rapor Gabungan</label>
+                <input type="file" name="file_rapor_gabungan" class="form-control" accept=".pdf,.jpg,.jpeg,.png">
+
+                @if($pendaftaran && $pendaftaran->document && $pendaftaran->document->file_rapor_gabungan != '-')
+                    <small class="text-success">
+                     File sudah ada:
+                        <a href="{{ asset($pendaftaran->document->file_rapor_gabungan) }}" target="_blank">
+                     Lihat File
+                        </a>
+                    </small>
+                @endif
+            </div>
         </div>
     </div>
 </div>
